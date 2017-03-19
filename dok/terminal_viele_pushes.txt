@@ -1,0 +1,390 @@
+Last login: Sat Nov 28 09:32:18 on ttys000
+bp:~ birgitpfeiffer$ source myvenv/bin/activate
+-bash: myvenv/bin/activate: No such file or directory
+bp:~ birgitpfeiffer$ cd djangogirls
+bp:djangogirls birgitpfeiffer$ source myvenv/bin/activate
+(myvenv) bp:djangogirls birgitpfeiffer$ python manage.py createsuperuser
+Username (leave blank to use 'birgitpfeiffer'): pymieze
+Email address: bp@msingi.de
+Password: 
+Password (again): 
+Superuser created successfully.
+(myvenv) bp:djangogirls birgitpfeiffer$ git init
+Illegal instruction
+(myvenv) bp:djangogirls birgitpfeiffer$ cd
+(myvenv) bp:~ birgitpfeiffer$ git init
+Illegal instruction
+(myvenv) bp:~ birgitpfeiffer$ cd djangogirls
+(myvenv) bp:djangogirls birgitpfeiffer$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   blog/views.py
+	modified:   mysite/urls.py
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	blog/templates/
+	blog/urls.py
+
+no changes added to commit (use "git add" and/or "git commit -a")
+(myvenv) bp:djangogirls birgitpfeiffer$ git add -A .
+(myvenv) bp:djangogirls birgitpfeiffer$ git commit -m "Changed the HTML for the site."
+[master fa1bc6c] Changed the HTML for the site.
+ 4 files changed, 20 insertions(+)
+ create mode 100644 blog/templates/blog/post_list.html
+ create mode 100644 blog/urls.py
+(myvenv) bp:djangogirls birgitpfeiffer$ git push
+Username for 'https://github.com': bifrap
+Password for 'https://bifrap@github.com': 
+remote: Invalid username or password.
+fatal: Authentication failed for 'https://github.com/bifrap/my-fourth-blog.git/'
+(myvenv) bp:djangogirls birgitpfeiffer$ git push
+Username for 'https://github.com': bifrap  
+Password for 'https://bifrap@github.com': 
+Counting objects: 10, done.
+Delta compression using up to 2 threads.
+Compressing objects: 100% (8/8), done.
+Writing objects: 100% (10/10), 1.04 KiB | 0 bytes/s, done.
+Total 10 (delta 3), reused 0 (delta 0)
+To https://github.com/bifrap/my-fourth-blog.git
+   97aa7a1..fa1bc6c  master -> master
+(myvenv) bp:djangogirls birgitpfeiffer$ python manage.py shell
+Python 3.4.3 (v3.4.3:9b73f1c3e601, Feb 23 2015, 02:52:03) 
+[GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+>>> Post.objects.all()
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+NameError: name 'Post' is not defined
+>>> from blog.models import Post
+>>> Post.objects.all()
+[<Post: Wunderbare kleine Becher>, <Post: Helle Schuhe ach nicht meine>, <Post: Helle Sonne grüne Wiese>, <Post: Dunkle Kekse >]
+>>> Post.objects.create(author=pymieze, title='Versuch', text='Test')
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+NameError: name 'pymieze' is not defined
+>>> Post.objects.create(author=me, title='Versuch', text='Test')
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+NameError: name 'me' is not defined
+>>> from django.contrib.auth.models import User
+>>> User.objecs.all()
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+AttributeError: type object 'User' has no attribute 'objecs'
+>>> User.objects.all()
+[<User: pymieze>]
+>>> me = User.objects.get(username='pymieze')
+>>> Post.objects.create(author=me, title='Sample title', text='Test')
+<Post: Sample title>
+>>> Post.objects.all()
+[<Post: Wunderbare kleine Becher>, <Post: Helle Schuhe ach nicht meine>, <Post: Helle Sonne grüne Wiese>, <Post: Dunkle Kekse >, <Post: Sample title>]
+>>> Post.objects.filter(author=me)
+[<Post: Wunderbare kleine Becher>, <Post: Helle Schuhe ach nicht meine>, <Post: Helle Sonne grüne Wiese>, <Post: Dunkle Kekse >, <Post: Sample title>]
+>>> Post.objects.filter(title__contains='title')
+[<Post: Sample title>]
+>>> from django.utils import timezone
+>>> Post.objects.filter(published_date__lte=timezone.now())
+[<Post: Wunderbare kleine Becher>, <Post: Helle Schuhe ach nicht meine>]
+>>> post = Post.objects.get(title="Samplet title")
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+  File "/Users/birgitpfeiffer/djangogirls/myvenv/lib/python3.4/site-packages/django/db/models/manager.py", line 127, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/Users/birgitpfeiffer/djangogirls/myvenv/lib/python3.4/site-packages/django/db/models/query.py", line 334, in get
+    self.model._meta.object_name
+blog.models.DoesNotExist: Post matching query does not exist.
+>>> post = Post.objects.get(title="Sample title")
+>>> post.publish()
+>>> Post.objects.filter(published_date__lte=timezone.now())
+[<Post: Wunderbare kleine Becher>, <Post: Helle Schuhe ach nicht meine>, <Post: Sample title>]
+>>> Post.objects.order_by('-created_date')
+[<Post: Sample title>, <Post: Dunkle Kekse >, <Post: Helle Sonne grüne Wiese>, <Post: Helle Schuhe ach nicht meine>, <Post: Wunderbare kleine Becher>]
+>>> Post.objects.order_by('created_date')
+[<Post: Wunderbare kleine Becher>, <Post: Helle Schuhe ach nicht meine>, <Post: Helle Sonne grüne Wiese>, <Post: Dunkle Kekse >, <Post: Sample title>]
+>>> Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+[<Post: Wunderbare kleine Becher>, <Post: Helle Schuhe ach nicht meine>, <Post: Sample title>]
+>>> exit()
+(myvenv) bp:djangogirls birgitpfeiffer$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   blog/templates/blog/post_list.html
+	modified:   blog/views.py
+
+no changes added to commit (use "git add" and/or "git commit -a")
+(myvenv) bp:djangogirls birgitpfeiffer$ git add -A .
+(myvenv) bp:djangogirls birgitpfeiffer$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   blog/templates/blog/post_list.html
+	modified:   blog/views.py
+
+(myvenv) bp:djangogirls birgitpfeiffer$ git commit -m "Modified templates to display posts from database."
+[master fca9b1f] Modified templates to display posts from database.
+ 2 files changed, 18 insertions(+), 5 deletions(-)
+(myvenv) bp:djangogirls birgitpfeiffer$ git push
+Username for 'https://github.com': bifrap
+Password for 'https://bifrap@github.com': 
+Counting objects: 7, done.
+Delta compression using up to 2 threads.
+Compressing objects: 100% (5/5), done.
+Writing objects: 100% (7/7), 933 bytes | 0 bytes/s, done.
+Total 7 (delta 1), reused 0 (delta 0)
+To https://github.com/bifrap/my-fourth-blog.git
+   fa1bc6c..fca9b1f  master -> master
+(myvenv) bp:djangogirls birgitpfeiffer$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   blog/views.py
+
+no changes added to commit (use "git add" and/or "git commit -a")
+(myvenv) bp:djangogirls birgitpfeiffer$ git add -A . 
+(myvenv) bp:djangogirls birgitpfeiffer$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   blog/views.py
+
+(myvenv) bp:djangogirls birgitpfeiffer$ git commit -m "Modified templates to display posts from database."
+[master a1bf20a] Modified templates to display posts from database.
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+(myvenv) bp:djangogirls birgitpfeiffer$ git push
+Username for 'https://github.com': bifrap
+Password for 'https://bifrap@github.com': 
+Counting objects: 4, done.
+Delta compression using up to 2 threads.
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (4/4), 448 bytes | 0 bytes/s, done.
+Total 4 (delta 2), reused 0 (delta 0)
+To https://github.com/bifrap/my-fourth-blog.git
+   fca9b1f..a1bf20a  master -> master
+(myvenv) bp:djangogirls birgitpfeiffer$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   blog/templates/blog/post_list.html
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	blog/static/
+
+no changes added to commit (use "git add" and/or "git commit -a")
+(myvenv) bp:djangogirls birgitpfeiffer$ git add -A .
+(myvenv) bp:djangogirls birgitpfeiffer$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	new file:   blog/static/css/blog.css
+	new file:   blog/static/css/bootstrap-theme.min.css
+	new file:   blog/static/css/css/bootstrap-theme.css
+	new file:   blog/static/css/css/bootstrap-theme.css.map
+	new file:   blog/static/css/css/bootstrap-theme.min.css
+	new file:   blog/static/css/css/bootstrap-theme.min.css.map
+	new file:   blog/static/css/css/bootstrap.css
+	new file:   blog/static/css/css/bootstrap.css.map
+	new file:   blog/static/css/css/bootstrap.min.css
+	new file:   blog/static/css/css/bootstrap.min.css.map
+	new file:   blog/static/css/fonts/glyphicons-halflings-regular.eot
+	new file:   blog/static/css/fonts/glyphicons-halflings-regular.svg
+	new file:   blog/static/css/fonts/glyphicons-halflings-regular.ttf
+	new file:   blog/static/css/fonts/glyphicons-halflings-regular.woff
+	new file:   blog/static/css/fonts/glyphicons-halflings-regular.woff2
+	new file:   blog/static/css/js/bootstrap.js
+	new file:   blog/static/css/js/bootstrap.min.js
+	new file:   blog/static/css/js/npm.js
+	modified:   blog/templates/blog/post_list.html
+
+(myvenv) bp:djangogirls birgitpfeiffer$ git commit -m "jetzt mit Stylesheet"
+[master d2b5d03] jetzt mit Stylesheet
+ 19 files changed, 10072 insertions(+), 20 deletions(-)
+ create mode 100644 blog/static/css/blog.css
+ create mode 100644 blog/static/css/bootstrap-theme.min.css
+ create mode 100644 blog/static/css/css/bootstrap-theme.css
+ create mode 100644 blog/static/css/css/bootstrap-theme.css.map
+ create mode 100644 blog/static/css/css/bootstrap-theme.min.css
+ create mode 100644 blog/static/css/css/bootstrap-theme.min.css.map
+ create mode 100644 blog/static/css/css/bootstrap.css
+ create mode 100644 blog/static/css/css/bootstrap.css.map
+ create mode 100644 blog/static/css/css/bootstrap.min.css
+ create mode 100644 blog/static/css/css/bootstrap.min.css.map
+ create mode 100644 blog/static/css/fonts/glyphicons-halflings-regular.eot
+ create mode 100644 blog/static/css/fonts/glyphicons-halflings-regular.svg
+ create mode 100644 blog/static/css/fonts/glyphicons-halflings-regular.ttf
+ create mode 100644 blog/static/css/fonts/glyphicons-halflings-regular.woff
+ create mode 100644 blog/static/css/fonts/glyphicons-halflings-regular.woff2
+ create mode 100644 blog/static/css/js/bootstrap.js
+ create mode 100644 blog/static/css/js/bootstrap.min.js
+ create mode 100644 blog/static/css/js/npm.js
+ rewrite blog/templates/blog/post_list.html (68%)
+(myvenv) bp:djangogirls birgitpfeiffer$ git push
+Username for 'https://github.com': bifrap
+Password for 'https://bifrap@github.com': 
+Counting objects: 28, done.
+Delta compression using up to 2 threads.
+Compressing objects: 100% (25/25), done.
+Writing objects: 100% (28/28), 278.04 KiB | 0 bytes/s, done.
+Total 28 (delta 4), reused 0 (delta 0)
+To https://github.com/bifrap/my-fourth-blog.git
+   a1bf20a..d2b5d03  master -> master
+(myvenv) bp:djangogirls birgitpfeiffer$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   blog/static/css/blog.css
+	modified:   blog/templates/blog/post_list.html
+
+no changes added to commit (use "git add" and/or "git commit -a")
+(myvenv) bp:djangogirls birgitpfeiffer$ git add -A .
+(myvenv) bp:djangogirls birgitpfeiffer$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   blog/static/css/blog.css
+	modified:   blog/templates/blog/post_list.html
+
+(myvenv) bp:djangogirls birgitpfeiffer$ git commit -m "letzte styleaenderungen"[master e0f8b11] letzte styleaenderungen
+ 2 files changed, 62 insertions(+), 15 deletions(-)
+ rewrite blog/static/css/blog.css (96%)
+(myvenv) bp:djangogirls birgitpfeiffer$ push git
+-bash: push: command not found
+(myvenv) bp:djangogirls birgitpfeiffer$ git push
+Username for 'https://github.com': bifrap
+Password for 'https://bifrap@github.com': 
+Counting objects: 9, done.
+Delta compression using up to 2 threads.
+Compressing objects: 100% (6/6), done.
+Writing objects: 100% (9/9), 1.11 KiB | 0 bytes/s, done.
+Total 9 (delta 3), reused 0 (delta 0)
+To https://github.com/bifrap/my-fourth-blog.git
+   d2b5d03..e0f8b11  master -> master
+(myvenv) bp:djangogirls birgitpfeiffer$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   blog/static/css/blog.css
+
+no changes added to commit (use "git add" and/or "git commit -a")
+(myvenv) bp:djangogirls birgitpfeiffer$ git add -A .
+(myvenv) bp:djangogirls birgitpfeiffer$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   blog/static/css/blog.css
+
+(myvenv) bp:djangogirls birgitpfeiffer$ git commit -m "farben und abstaende"
+[master be5f2f5] farben und abstaende
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+(myvenv) bp:djangogirls birgitpfeiffer$ git push
+Username for 'https://github.com': bifrap
+Password for 'https://bifrap@github.com': 
+Counting objects: 6, done.
+Delta compression using up to 2 threads.
+Compressing objects: 100% (5/5), done.
+Writing objects: 100% (6/6), 630 bytes | 0 bytes/s, done.
+Total 6 (delta 3), reused 0 (delta 0)
+To https://github.com/bifrap/my-fourth-blog.git
+   e0f8b11..be5f2f5  master -> master
+(myvenv) bp:djangogirls birgitpfeiffer$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   blog/templates/blog/post_list.html
+	modified:   blog/urls.py
+	modified:   blog/views.py
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	blog/templates/blog/base.html
+	blog/templates/blog/post_detail.html
+
+no changes added to commit (use "git add" and/or "git commit -a")
+(myvenv) bp:djangogirls birgitpfeiffer$ git add -A .
+(myvenv) bp:djangogirls birgitpfeiffer$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	renamed:    blog/templates/blog/post_list.html -> blog/templates/blog/base.html
+	new file:   blog/templates/blog/post_detail.html
+	modified:   blog/templates/blog/post_list.html
+	modified:   blog/urls.py
+	modified:   blog/views.py
+
+(myvenv) bp:djangogirls birgitpfeiffer$ git commit -m "postseinzeldarstellung"
+[master 3055097] postseinzeldarstellung
+ 5 files changed, 38 insertions(+), 49 deletions(-)
+ rename blog/templates/blog/{post_list.html => base.html} (56%)
+ create mode 100644 blog/templates/blog/post_detail.html
+ rewrite blog/templates/blog/post_list.html (97%)
+(myvenv) bp:djangogirls birgitpfeiffer$ git pus
+git: 'pus' is not a git command. See 'git --help'.
+
+Did you mean one of these?
+	push
+	spush
+(myvenv) bp:djangogirls birgitpfeiffer$ push
+-bash: push: command not found
+(myvenv) bp:djangogirls birgitpfeiffer$ git push
+Username for 'https://github.com': bifrap
+Password for 'https://bifrap@github.com': 
+Counting objects: 10, done.
+Delta compression using up to 2 threads.
+Compressing objects: 100% (9/9), done.
+Writing objects: 100% (10/10), 1.34 KiB | 0 bytes/s, done.
+Total 10 (delta 3), reused 0 (delta 0)
+To https://github.com/bifrap/my-fourth-blog.git
+   be5f2f5..3055097  master -> master
+(myvenv) bp:djangogirls birgitpfeiffer$ 

@@ -1,0 +1,55 @@
+Last login: Sat Nov 28 08:32:34 on console
+bp:~ birgitpfeiffer$ cd 
+bp:~ birgitpfeiffer$ source myvenv/bin/activate
+-bash: myvenv/bin/activate: No such file or directory
+bp:~ birgitpfeiffer$ djangogirls
+-bash: djangogirls: command not found
+bp:~ birgitpfeiffer$ cd djangogirls
+bp:djangogirls birgitpfeiffer$ source myvenv/bin/activate
+(myvenv) bp:djangogirls birgitpfeiffer$ 
+(myvenv) bp:djangogirls birgitpfeiffer$ django-admin startproject mysite .
+(myvenv) bp:djangogirls birgitpfeiffer$ python manage.py migrate
+Operations to perform:
+  Synchronize unmigrated apps: messages, staticfiles
+  Apply all migrations: sessions, admin, contenttypes, auth
+Synchronizing apps without migrations:
+  Creating tables...
+    Running deferred SQL...
+  Installing custom SQL...
+Running migrations:
+  Rendering model states... DONE
+  Applying contenttypes.0001_initial... OK
+  Applying auth.0001_initial... OK
+  Applying admin.0001_initial... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying sessions.0001_initial... OK
+(myvenv) bp:djangogirls birgitpfeiffer$ python manage.py runserver
+Performing system checks...
+
+System check identified no issues (0 silenced).
+November 28, 2015 - 09:47:21
+Django version 1.8, using settings 'mysite.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+[28/Nov/2015 09:47:56]"GET / HTTP/1.1" 200 1767
+[28/Nov/2015 09:47:56]"GET /favicon.ico HTTP/1.1" 404 1936
+[28/Nov/2015 09:47:56]"GET /favicon.ico HTTP/1.1" 404 1936
+
+^C(myvenv) bp:djangogirls birgitpfeiffer$ 
+(myvenv) bp:djangogirls birgitpfeiffer$ python manage.py startapp blog
+(myvenv) bp:djangogirls birgitpfeiffer$ python manage.py makemigrations blog
+Migrations for 'blog':
+  0001_initial.py:
+    - Create model Post
+(myvenv) bp:djangogirls birgitpfeiffer$ python manage.py migrate blog
+Operations to perform:
+  Apply all migrations: blog
+Running migrations:
+  Rendering model states... DONE
+  Applying blog.0001_initial... OK
+(myvenv) bp:djangogirls birgitpfeiffer$ 

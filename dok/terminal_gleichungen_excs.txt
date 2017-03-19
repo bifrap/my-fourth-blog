@@ -1,0 +1,77 @@
+Last login: Wed Dec  9 15:48:13 on console
+bp:~ birgitpfeiffer$ cd djangogirls
+bp:djangogirls birgitpfeiffer$ python source myvenv/bin/activate
+python: can't open file 'source': [Errno 2] No such file or directory
+bp:djangogirls birgitpfeiffer$ source myvenv/bin
+-bash: source: myvenv/bin: is a directory
+bp:djangogirls birgitpfeiffer$ ls
+Pythontest	db.sqlite3	mysite
+blog		manage.py	myvenv
+bp:djangogirls birgitpfeiffer$ manage.py 
+-bash: manage.py: command not found
+bp:djangogirls birgitpfeiffer$ source myvenv/bin/activate
+(myvenv) bp:djangogirls birgitpfeiffer$ python dir()
+-bash: syntax error near unexpected token `('
+(myvenv) bp:djangogirls birgitpfeiffer$ dir()
+> 
+> python manage.py shell
+-bash: syntax error near unexpected token `python'
+(myvenv) bp:djangogirls birgitpfeiffer$ python manage.py shell
+Python 3.4.3 (v3.4.3:9b73f1c3e601, Feb 23 2015, 02:52:03) 
+[GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+>>> dir()
+['__builtins__']
+>>> >>> def ping():
+  File "<console>", line 1
+    def pin ping():
+               ^
+SyntaxError: invalid syntax
+>>> def ping():
+...     return "Ping!"
+... 
+>>> ping()
+'Ping!'
+>>> x = ping()
+>>> print (x)
+Ping!
+>>> dir()
+['__builtins__', 'ping', 'x']
+>>> import math
+>>> dir(math)
+['__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'acos', 'acosh', 'asin', 'asinh', 'atan', 'atan2', 'atanh', 'ceil', 'copysign', 'cos', 'cosh', 'degrees', 'e', 'erf', 'erfc', 'exp', 'expm1', 'fabs', 'factorial', 'floor', 'fmod', 'frexp', 'fsum', 'gamma', 'hypot', 'isfinite', 'isinf', 'isnan', 'ldexp', 'lgamma', 'log', 'log10', 'log1p', 'log2', 'modf', 'pi', 'pow', 'radians', 'sin', 'sinh', 'sqrt', 'tan', 'tanh', 'trunc']
+>>> math.pi
+3.141592653589793
+>>> def volume(r):
+... """Returns the volume of a sphere with radius r.""" 
+  File "<console>", line 2
+    """Returns the volume of a sphere with radius r."""
+                                                      ^
+IndentationError: expected an indented block
+>>> 
+>>> def volume(r):
+...     """Returns the volume of a sphere with radius r."""
+...     v = (4.0/3.0) * math.pi * r**3...     return v
+... 
+>>> volume(2)
+33.510321638291124
+>>> def triangle_area(b, h):
+...     """Returns the area of a triangle with base b and height h."""
+...     return 0.5 * b * h
+... 
+>>> triangle_area(3, 6)
+9.0
+>>> def cm(feet = 0, inches = 0):
+...     """Converts a lenght from feet and inches to centimetres."""
+...     inches_to_cm = inches * 2.54
+...     feet_to_cm = feet * 12 * 2.54
+...     return inches_to_cm + feet_to_cm
+... 
+>>> cm(feet = 5)
+152.4
+>>> cm(inches = 9, feet = 5)
+175.26
+>>> cm(inches = 70)
+177.8
+>>> 
